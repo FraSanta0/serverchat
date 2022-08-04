@@ -20,10 +20,6 @@ let userList = new Map();
 io.on('connection', (socket) => {
     let id_account = socket.handshake.query.id_account;
     let room1;
-    addUser(id_account, socket.id);
-
-    socket.broadcast.emit('user-list', [...userList.keys()]);
-    socket.emit('user-list', [...userList.keys()]);
 
     socket.on('message', (msg) => {
         console.log(msg);
@@ -43,6 +39,9 @@ io.on('connection', (socket) => {
         socket.join(room);
         io.sockets.in(room).emit('connectToRoom', "You are in room no. "+room);
         room1=room;
+        addUser(id_account, socket.id);
+        socket.broadcast.emit('user-list', [...userList.keys()]);
+        socket.emit('user-list', [...userList.keys()]);
       });
 });
 
